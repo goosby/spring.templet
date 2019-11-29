@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+		http://www.springframework.org/schema/jee
+		http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+    <context:property-placeholder location="classpath:*.properties" ignore-resource-not-found="true"/>
+
+    <bean id="analysisFile" class="cn.goosby.anl.AnalysisFile">
+        <property name="fileName" value="${quartz.analysisFile.fileName}"></property>
+        <property name="url" value="${quartz.get.host.url}"></property>
+        <property name="corePoolSize" value="${quartz.threadPool.corePoolSize}"></property>
+        <property name="maximumPoolSize" value="${quartz.threadPool.maximumPoolSize}"></property>
+        <property name="keepAliveTime" value="${quartz.threadPool.keepAliveTime}"></property>
+        <property name="capacity" value="${quartz.threadPool.capacity}"></property>
+        <property name="filePath" value="${quartz.write.file.path}"></property>
+    </bean>
+
+    <bean id="analysisFileDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 指定任务类 -->
+        <property name="targetObject" ref="analysisFile"/>
+        <!-- 指定任务执行的方法 -->
+        <property name="targetMethod" value="execute"/>
+    </bean>
+
+    <bean id="analysisFileTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="analysisFileDetail"/>
+        <!-- 每2秒运行一次 -->
+        <property name="cronExpression" value="${quartz.analysisFileTrigger}"/>
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="analysisFileTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

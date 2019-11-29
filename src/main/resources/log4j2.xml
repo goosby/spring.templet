@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <Appenders>
+        <!-- 打印到文件 -->
+        <File name="log" fileName="quartz.log">
+            <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss.SS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+        <!-- 打印到控制台 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss.SS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="cn.goosby" level="INFO">
+            <AppenderRef ref="log"/>
+        </Logger>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</configuration>
