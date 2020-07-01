@@ -10,7 +10,7 @@
     <version>1</version>
     <properties>
         <org.springframework.version>5.1.4.RELEASE</org.springframework.version>
-        <org.quartz-scheduler.version>2.3.0</org.quartz-scheduler.version>
+        <org.quartz-scheduler.version>2.3.2</org.quartz-scheduler.version>
         <org.apache.logging.log4j.version>2.11.1</org.apache.logging.log4j.version>
     </properties>
 
